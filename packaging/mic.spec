@@ -1,15 +1,15 @@
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-
 Name:       mic
 Summary:    Image Creator for Linux Distributions
 Version:    0.19
-Release:    1
+Release:    0
 Group:      System/Utilities
 License:    GPL-2.0
 BuildArch:  noarch
 URL:        http://www.tizen.org
-Source0:    %{name}_%{version}.tar.gz
-Source1001: 	mic.manifest
+Source0:    %{name}-%{version}.tar.gz
+%if 0%{?tizen_version:1}
+Source1001: mic.manifest
+%endif
 Requires:   python-rpm
 Requires:   util-linux
 Requires:   coreutils
@@ -60,9 +60,9 @@ BuildRequires:  python-devel
 BuildRequires:  python-docutils
 %endif
 
-Obsoletes:  mic2
-
-BuildRoot:  %{_tmppath}/%{name}_%{version}-build
+%if ! 0%{?centos_version}
+BuildRequires:fdupes
+%endif
 
 %description
 The tool mic is used to create and manipulate images for Linux distributions.
@@ -73,7 +73,9 @@ an image.
 
 %prep
 %setup -q -n %{name}-%{version}
+%if 0%{?tizen_version:1}
 cp %{SOURCE1001} .
+%endif
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
@@ -95,11 +97,19 @@ mkdir -p %{buildroot}/%{_prefix}/share/man/man1
 install -m644 doc/mic.1 %{buildroot}/%{_prefix}/share/man/man1
 %endif
 
+%if ! 0%{?centos_version}
+%fdupes %{buildroot}
+%endif
+
+
 %files
+%if 0%{?tizen_version:1}
 %manifest %{name}.manifest
+%endif
 %defattr(-,root,root,-)
+%license COPYING
 %doc doc/*
-%doc README.rst AUTHORS COPYING ChangeLog
+%doc README.rst AUTHORS ChangeLog
 %if ! 0%{?tizen_version:1}
 %{_mandir}/man1/*
 %endif
@@ -109,4 +119,3 @@ install -m644 doc/mic.1 %{buildroot}/%{_prefix}/share/man/man1
 %dir %{_prefix}/lib/%{name}
 %{_prefix}/lib/%{name}/*
 %{_bindir}/*
-
