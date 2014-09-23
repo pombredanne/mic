@@ -80,21 +80,21 @@ cp %{SOURCE1001} .
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 %if ! 0%{?tizen_version:1}
-make man
+%__make man
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 %if 0%{?suse_version}
-%{__python} setup.py install --root=$RPM_BUILD_ROOT --prefix=%{_prefix}
+%{__python} setup.py install --root=%{buildroot} --prefix=%{_prefix}
 %else
-%{__python} setup.py install --root=$RPM_BUILD_ROOT -O1
+%{__python} setup.py install --root=%{buildroot} -O1
 %endif
 
 # install man page
-mkdir -p %{buildroot}/%{_prefix}/share/man/man1
+mkdir -p %{buildroot}%{_mandir}/man1
 %if ! 0%{?tizen_version:1}
-install -m644 doc/mic.1 %{buildroot}/%{_prefix}/share/man/man1
+install -m644 doc/mic.1 %{buildroot}%{_mandir}/man1
 %endif
 
 %if ! 0%{?centos_version}
@@ -107,7 +107,9 @@ install -m644 doc/mic.1 %{buildroot}/%{_prefix}/share/man/man1
 %manifest %{name}.manifest
 %endif
 %defattr(-,root,root,-)
+%if ! (0%{?suse_version} || 0%{?centos_version})
 %license COPYING
+%endif
 %doc doc/*
 %doc README.rst AUTHORS ChangeLog
 %if ! 0%{?tizen_version:1}
