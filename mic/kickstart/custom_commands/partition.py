@@ -1,5 +1,3 @@
-#!/usr/bin/python -tt
-#
 # Marko Saukko <marko.saukko@cybercom.com>
 #
 # Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).

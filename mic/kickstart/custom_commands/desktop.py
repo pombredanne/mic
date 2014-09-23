@@ -1,5 +1,3 @@
-#!/usr/bin/python -tt
-#
 # Copyright (c) 2008, 2009, 2010 Intel, Inc.
 #
 # Yi Yang <yi.y.yang@intel.com>

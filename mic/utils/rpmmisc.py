@@ -1,5 +1,3 @@
-#!/usr/bin/python -tt
-#
 # Copyright (c) 2008, 2009, 2010, 2011 Intel, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
